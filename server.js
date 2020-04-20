@@ -12,7 +12,7 @@ const io = socketio(server);
 
 app.use(express.static(path.join(__dirname,'public')));
 
-const botname = 'Chatcord Bot';
+const botname = 'Dechat Bot';
 
 io.on('connection', socket=>{
 
