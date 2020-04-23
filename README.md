@@ -2,8 +2,10 @@
 
 The App is a real time chatapp buid on expressjs and socket.io. It supports room, users and sending images features.
 # Demo  
-Landing page
-![Landing page](https://github.com/Ayush909/dechat1.0/tree/master/demo-imgs/Demo1.png)
+Landing page  
+![Landing page](/demo-imgs/Demo1.png)  
+Chats Screenshot  
+![ChatScreenshot](/demo-imgs/Demo3.png)
 # Getting Started  
 ## Prerequisites
 ```
