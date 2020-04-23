@@ -5,6 +5,7 @@ const formatMessage = require('./utils/message');
 const {userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users');
 const app = express();
 const socketio = require('socket.io');
+const fs = require('fs');
 
 const server = http.createServer(app);
 
@@ -34,11 +35,26 @@ io.on('connection', socket=>{
         );
 
         //sending users and room info to client page
-        io.to(user.room).emit('roomUsers',{
+        io.emit('roomUsers',{
             room: user.room,
             users: getRoomUsers(user.room)
-        });
+        });  
+        
+        //uploading image
+        socket.on('upload-image',(message)=>{
+            var writer = fs.createWriteStream(path.resolve(__dirname,'./public/images/'+message.name),{
+                encoding: 'base64'
+            });
+            
+            writer.write(message.data);
+            writer.end();
 
+            writer.on('finish',()=>{
+                io.to(user.room).emit('image-uploaded',{
+                    name: '/images/' + message.name
+                });
+            });
+        });
     });
         
     //Listen to chatMessage
@@ -46,6 +62,8 @@ io.on('connection', socket=>{
         const user = getCurrentUser(socket.id);
         io.to(user.room).emit('message',formatMessage(user.username,msg));
     })
+
+    
 
     //Notifies all users when a user disconnects
     socket.on('disconnect',()=>{

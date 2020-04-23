@@ -2,6 +2,9 @@ const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
+const file = document.getElementById('myfile');
+
+
 
 //Getting username and room name
 const {username , room } = Qs.parse(location.search, {
@@ -28,6 +31,30 @@ socket.on('message', message=>{
     //scroll down
     chatMessages.scrollTop = chatMessages.scrollHeight;
 })
+
+//file uploading here
+file.addEventListener('change', ()=>{
+    if(!file.files.length){
+        return;
+    }
+    var firstFile = file.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function(){
+        socket.emit('upload-image',{
+            name: firstFile.name,
+            data: reader.result
+        });
+    };
+    reader.readAsArrayBuffer(firstFile);
+});
+socket.on('image-uploaded',(message)=>{
+    var img = document.createElement('img');
+    img.classList.add('message');
+    img.setAttribute('src', message.name);
+     img.setAttribute('height', '100px');
+     chatMessages.appendChild(img);
+     chatMessages.scrollTop = chatMessages.scrollHeight;
+});
 
 
 chatForm.addEventListener('submit', (e)=>{
