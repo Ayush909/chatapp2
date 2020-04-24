@@ -25,7 +25,7 @@ io.on('connection', socket=>{
         socket.join(user.room);
 
         //Welcome message to the user only
-        socket.emit('message', formatMessage(botname,'Welcome to Chatcord'));
+        socket.emit('message', formatMessage(botname,'Welcome to Dechat'));
 
         //Notifies all users when a new user connects except the user that connects
         socket.broadcast
