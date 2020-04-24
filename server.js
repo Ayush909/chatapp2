@@ -42,18 +42,23 @@ io.on('connection', socket=>{
         
         //uploading image
         socket.on('upload-image',(message)=>{
-            var writer = fs.createWriteStream(path.resolve(__dirname,'./public/images/'+message.name),{
-                encoding: 'base64'
-            });
-            
-            writer.write(message.data);
-            writer.end();
-
-            writer.on('finish',()=>{
-                io.to(user.room).emit('image-uploaded',{
-                    name: '/images/' + message.name
+            if(message.size < 500000){
+                var writer = fs.createWriteStream(path.resolve(__dirname,'./public/images/'+message.name),{
+                    encoding: 'base64'
+                });  
+                writer.write(message.data);
+                writer.end();
+                
+                writer.on('finish',()=>{
+                    io.to(user.room).emit('image-uploaded',{
+                        name: '/images/' + message.name
+                    });
                 });
-            });
+            }
+            
+            
+            
+
         });
     });
         

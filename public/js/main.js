@@ -42,6 +42,7 @@ file.addEventListener('change', ()=>{
     reader.onloadend = function(){
         socket.emit('upload-image',{
             name: firstFile.name,
+            size: firstFile.size,
             data: reader.result
         });
     };
