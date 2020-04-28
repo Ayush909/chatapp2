@@ -54,10 +54,7 @@ io.on('connection', socket=>{
                         name: '/images/' + message.name
                     });
                 });
-            }
-            
-            
-            
+            }      
 
         });
     });
@@ -77,10 +74,11 @@ io.on('connection', socket=>{
             io.to(user.room).emit('message',formatMessage(botname,`${user.username} has left the chat`));
         }
         //sending users and room info to client page
-        io.to(user.room).emit('roomUsers',{
-            room: user.room,
-            users: getRoomUsers(user.room)
-        });
+        // user.room = 'Room1'
+        // io.to(user.room).emit('roomUsers',{
+        //     room: user.room,
+        //     users: getRoomUsers(user.room)
+        // });
     })
 
 
